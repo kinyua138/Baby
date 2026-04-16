@@ -435,7 +435,7 @@
 </div>
 
 <audio id="bgMusic" loop preload="auto">
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  <source src="her/Ed%20Sheeran%20-%20Perfect%20(Official%20Music%20Video).mp3" type="audio/mpeg">
 </audio>
 
 <script>
@@ -480,40 +480,20 @@ Tosh 💌
 
 P.S. — You're beautiful. Like, really beautiful. Just in case you forgot today. 💖`;
   
-  // ==================== ED SHEERAN - PERFECT (YouTube embed as fallback) ====================
+  // ==================== ED SHEERAN - PERFECT ====================
   let musicPlaying = false;
   const musicToggle = document.getElementById('musicToggle');
   const musicStatus = document.getElementById('musicStatus');
   let audioElement = null;
   
   function initMusic() {
-    audioElement = new Audio();
+    audioElement = document.getElementById('bgMusic');
+    if (!audioElement) return;
     audioElement.loop = true;
     audioElement.volume = 0.3;
-    
-    // Try multiple sources for "Perfect"
-    const musicSources = [
-      'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3',
-      'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'
-    ];
-    
-    let sourceIndex = 0;
-    
-    function tryNextSource() {
-      if (sourceIndex >= musicSources.length) {
-        console.log('Using fallback - please play manually');
-        return;
-      }
-      audioElement.src = musicSources[sourceIndex];
-      audioElement.load();
-    }
-    
     audioElement.addEventListener('error', () => {
-      sourceIndex++;
-      tryNextSource();
+      console.log('Failed to load local audio. Make sure the MP3 file is in the her folder.');
     });
-    
-    tryNextSource();
   }
   
   function toggleMusic() {
@@ -521,17 +501,18 @@ P.S. — You're beautiful. Like, really beautiful. Just in case you forgot today
       initMusic();
     }
     
+    if (!audioElement) return;
     if (musicPlaying) {
       audioElement.pause();
       musicStatus.textContent = 'Play Music 🎵';
       musicPlaying = false;
     } else {
-      audioElement.play().catch(e => {
-        console.log('Autoplay blocked - user interaction needed');
+      audioElement.play().then(() => {
+        musicStatus.textContent = 'Playing ❤️';
+        musicPlaying = true;
+      }).catch(() => {
         musicStatus.textContent = 'Click to Play';
       });
-      musicPlaying = true;
-      musicStatus.textContent = 'Playing ❤️';
     }
   }
   
