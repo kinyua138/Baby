@@ -348,7 +348,7 @@
 
 <div class="music-control" id="musicToggle">
   <span>🎵</span>
-  <span id="musicStatus">Play Music</span>
+  <span id="musicStatus">Play “Perfect” by Ed Sheeran</span>
 </div>
 
 <div class="surprise-badge" id="secretSurprise">
@@ -481,6 +481,7 @@ Tosh 💌
 P.S. — You're beautiful. Like, really beautiful. Just in case you forgot today. 💖`;
   
   // ==================== ED SHEERAN - PERFECT ====================
+  const musicTitle = 'Perfect — Ed Sheeran';
   let musicPlaying = false;
   const musicToggle = document.getElementById('musicToggle');
   const musicStatus = document.getElementById('musicStatus');
@@ -493,7 +494,9 @@ P.S. — You're beautiful. Like, really beautiful. Just in case you forgot today
     audioElement.volume = 0.3;
     audioElement.addEventListener('error', () => {
       console.log('Failed to load local audio. Make sure the MP3 file is in the her folder.');
+      musicStatus.textContent = 'Audio not found';
     });
+    musicStatus.textContent = `Play “${musicTitle}”`;
   }
   
   function toggleMusic() {
@@ -504,14 +507,14 @@ P.S. — You're beautiful. Like, really beautiful. Just in case you forgot today
     if (!audioElement) return;
     if (musicPlaying) {
       audioElement.pause();
-      musicStatus.textContent = 'Play Music 🎵';
+      musicStatus.textContent = `Play “${musicTitle}”`;
       musicPlaying = false;
     } else {
       audioElement.play().then(() => {
-        musicStatus.textContent = 'Playing ❤️';
+        musicStatus.textContent = `Playing ${musicTitle}`;
         musicPlaying = true;
       }).catch(() => {
-        musicStatus.textContent = 'Click to Play';
+        musicStatus.textContent = `Click again to play ${musicTitle}`;
       });
     }
   }
