@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Valentine's Memoir · For You, Val</title>
+  
+  <!-- Google Fonts for elegant typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- GSAP for buttery smooth animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0c0b14;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      color: #f2e6ed;
+    }
+
+    /* Custom cursor */
+    .custom-cursor {
+      width: 20px;
+      height: 20px;
+      background: rgba(255, 120, 160, 0.5);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.1s ease;
+      mix-blend-mode: screen;
+      backdrop-filter: blur(4px);
+    }
+
+    /* Canvas background for live particles */
+    #particleCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Main container */
+    .container {
+      position: relative;
+      z-index: 10;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* Hero section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 10vw, 7rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #fff 0%, #ffb8d0 40%, #ff88aa 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 1rem;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .hero-subtitle {
+      font-size: clamp(0.9rem, 3vw, 1.1rem);
+      color: rgba(255, 200, 220, 0.7);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      opacity: 0;
+    }
+
+    .hero-image {
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 0 4px rgba(255,120,160,0.3);
+      margin: 2rem 0;
+      opacity: 0;
+      transform: scale(0.9);
+    }
+
+    /* Chapter sections */
+    .chapter {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5rem 0;
+      border-bottom: 1px solid rgba(255, 180, 200, 0.1);
+      position: relative;
+    }
+
+    .chapter:last-child {
+      border-bottom: none;
+    }
+
+    .chapter-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .chapter-text {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+
+    .chapter-number {
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      color: #ff88aa;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .chapter-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 400;
+      margin-bottom: 1.5rem;
+      color: #ffd0df;
+    }
+
+    .chapter-description {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: rgba(255, 230, 240, 0.8);
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+    }
+
+    .chapter-image {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 2rem;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+      opacity: 0;
+      transform: translateX(30px);
+      justify-self: center;
+    }
+
+    /* Love letter card */
+    .letter-card {
+      background: linear-gradient(135deg, rgba(255, 200, 220, 0.08), rgba(255, 120, 160, 0.05));
+      backdrop-filter: blur(20px);
+      border-radius: 2rem;
+      padding: 3rem;
+      border: 1px solid rgba(255, 180, 200, 0.2);
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .letter-card p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      line-height: 1.9;
+      margin-bottom: 1.5rem;
+      color: #f0e0e8;
+    }
+
+    .signature {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-style: italic;
+      color: #ffb8d0;
+      margin-top: 2rem;
+    }
+
+    /* Surprise section */
+    .surprise-section {
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 5rem 0;
+    }
+
+    .surprise-btn {
+      background: linear-gradient(135deg, #ff6688, #ff3366);
+      border: none;
+      padding: 1.2rem 3rem;
+      border-radius: 4rem;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(255, 51, 102, 0.3);
+      margin: 2rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .surprise-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 40px rgba(255, 51, 102, 0.5);
+    }
+
+    .surprise-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .surprise-btn:active::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    /* Floating hearts container */
+    .floating-hearts {
+      position: fixed;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    /* Navigation */
+    .nav-links {
+      position: fixed;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .nav-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 180, 200, 0.4);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .nav-dot.active {
+      background: #ff88aa;
+      transform: scale(1.3);
+      box-shadow: 0 0 10px #ff88aa;
+    }
+
+    .nav-dot:hover {
+      background: #ffb8d0;
+      transform: scale(1.2);
+    }
+
+    /* Music control */
+    .music-control {
+      position: fixed;
+      bottom: 2rem;
+      left: 2rem;
+      z-index: 100;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(10px);
+      padding: 0.7rem 1.2rem;
+      border-radius: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      cursor: pointer;
+      border: 1px solid rgba(255,180,200,0.3);
+      transition: all 0.3s ease;
+    }
+
+    .music-control:hover {
+      background: rgba(255, 100, 130, 0.3);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .chapter-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+      }
+      .chapter-image {
+        order: -1;
+      }
+      .nav-links {
+        right: 1rem;
+      }
+      .letter-card {
+        padding: 1.5rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 0 1rem;
+      }
+      .hero-image {
+        width: 200px;
+        height: 200px;
+      }
+      .chapter-title {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="custom-cursor" id="customCursor"></div>
+<canvas id="particleCanvas"></canvas>
+<div class="floating-hearts" id="floatingHearts"></div>
+
+<!-- Navigation dots -->
+<div class="nav-links" id="navLinks">
+  <div class="nav-dot active" data-section="0"></div>
+  <div class="nav-dot" data-section="1"></div>
+  <div class="nav-dot" data-section="2"></div>
+  <div class="nav-dot" data-section="3"></div>
+  <div class="nav-dot" data-section="4"></div>
+</div>
+
+<!-- Music control -->
+<div class="music-control" id="musicControl">
+  <span id="musicIcon">🎵</span>
+  <span id="musicText">play music</span>
+</div>
+
+<div class="container">
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <h1 class="hero-title">For You, Val</h1>
+    <p class="hero-subtitle">a story written in heartbeats</p>
+    <img class="hero-image" id="heroImg" alt="Val" src="her/WhatsApp Image 2026-04-16 at 11.52.42.jpeg" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 300 300%22%3E%3Ccircle cx=%22150%22 cy=%22150%22 r=%22150%22 fill=%22%23331a2e%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23ff88aa%22 font-size=%2240%22%3E💖%3C/text%3E%3C/svg%3E'">
+    <div style="margin-top: 2rem;">
+      <button class="surprise-btn" id="scrollBtn">begin the journey →</button>
+    </div>
+  </section>
+
+  <!-- Chapter 1: The First Moment -->
+  <section class="chapter" id="chapter1">
+    <div class="chapter-content">
+      <div class="chapter-text">
+        <div class="chapter-number">01</div>
+        <h2 class="chapter-title">the first moment</h2>
+        <p class="chapter-description">I don't remember exactly when it happened. Maybe it was the first time you laughed at something stupid I said. Maybe it was the way you looked at me like I actually mattered. All I know is that somewhere between hello and now, you became the most important person in my world.</p>
+        <p class="chapter-description">You walked into my life like you'd always been there. Quietly. Gently. And suddenly, everything felt different. Better. Brighter.</p>
+      </div>
+      <img class="chapter-image" id="chapter1Img" alt="Memory" src="her/WhatsApp Image 2026-04-16 at 11.52.42 (1).jpeg" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 400%22%3E%3Crect width=%22400%22 height=%22400%22 fill=%22%23331a2e%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23ff88aa%22 font-size=%2230%22%3E💕%3C/text%3E%3C/svg%3E'">
+    </div>
+  </section>
+
+  <!-- Chapter 2: The Little Things -->
+  <section class="chapter" id="chapter2">
+    <div class="chapter-content">
+      <div class="chapter-text">
+        <div class="chapter-number">02</div>
+        <h2 class="chapter-title">the little things</h2>
+        <p class="chapter-description">It's not one big thing. It's a thousand small ones. The way you get excited about the little joys. The way you care without expecting anything back. The way your eyes light up when you talk about something you love.</p>
+        <p class="chapter-description">I notice everything about you. The way you tilt your head when you're thinking. The way your voice softens when you're tired. The way you exist — beautifully, gently, without even trying.</p>
+      </div>
+      <img class="chapter-image" id="chapter2Img" alt="Memory" src="her/WhatsApp Image 2026-04-16 at 11.52.42 (2).jpeg" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 400%22%3E%3Crect width=%22400%22 height=%22400%22 fill=%22%23331a2e%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23ff88aa%22 font-size=%2230%22%3E✨%3C/text%3E%3C/svg%3E'">
+    </div>
+  </section>
+
+  <!-- Chapter 3: The Letter -->
+  <section class="chapter" id="chapter3">
+    <div class="letter-card" id="letterCard">
+      <div class="chapter-number" style="margin-bottom: 1rem;">03</div>
+      <h2 class="chapter-title" style="margin-bottom: 2rem;">a letter for you</h2>
+      <p id="letterPreview">"I've rewritten this so many times. Not because I don't know what to say — but because words feel too small for what you mean to me."</p>
+      <button class="surprise-btn" id="readLetterBtn" style="margin-top: 1.5rem; padding: 0.8rem 2rem; font-size: 0.9rem;">read the full letter →</button>
+      <div class="signature" id="fullLetter" style="display: none;"></div>
+    </div>
+  </section>
+
+  <!-- Chapter 4: The Surprise -->
+  <section class="surprise-section" id="chapter4">
+    <h2 class="chapter-title" style="margin-bottom: 1rem;">one last thing</h2>
+    <p class="chapter-description" style="max-width: 500px; margin: 0 auto 2rem;">I saved something special for the end. Click below when you're ready.</p>
+    <button class="surprise-btn" id="finalSurpriseBtn">💗 open your surprise 💗</button>
+    <p id="surpriseMessage" style="margin-top: 2rem; font-size: 1.2rem; opacity: 0; transition: all 0.5s ease;"></p>
+  </section>
+</div>
+
+<audio id="bgMusic" loop preload="auto">
+<source src="her/JP%20Cooper%20-%20The%20Reason%20Why%20ft.%20Stefflon%20Don,%20Banx%20_%20Ranx.mp3" type="audio/mpeg">
+
+</audio>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+  // ==================== CUSTOM CURSOR ====================
+  const cursor = document.getElementById('customCursor');
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
+  });
+  
+  document.addEventListener('mouseenter', () => cursor.style.opacity = '1');
+  document.addEventListener('mouseleave', () => cursor.style.opacity = '0');
+
+  // ==================== PARTICLE SYSTEM (LIVE BACKGROUND) ====================
+  const canvas = document.getElementById('particleCanvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  let particleCount = 80;
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  class Particle {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2 + 1;
+      this.speedX = (Math.random() - 0.5) * 0.3;
+      this.speedY = (Math.random() - 0.5) * 0.3 + 0.1;
+      this.color = `hsla(${Math.random() * 40 + 320}, 80%, 70%, ${Math.random() * 0.3 + 0.1})`;
+    }
+
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      
+      if (this.x < 0) this.x = canvas.width;
+      if (this.x > canvas.width) this.x = 0;
+      if (this.y < 0) this.y = canvas.height;
+      if (this.y > canvas.height) this.y = 0;
+    }
+
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+    }
+  }
+
+  function initParticles() {
+    particles = [];
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+  }
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(particle => {
+      particle.update();
+      particle.draw();
+    });
+    requestAnimationFrame(animateParticles);
+  }
+
+  window.addEventListener('resize', () => {
+    resizeCanvas();
+    initParticles();
+  });
+
+  resizeCanvas();
+  initParticles();
+  animateParticles();
+
+  // ==================== GSAP ANIMATIONS ====================
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Hero animations
+  gsap.to('.hero-title', {
+    opacity: 1,
+    y: 0,
+    duration: 1.2,
+    ease: 'power3.out'
+  });
+  gsap.to('.hero-subtitle', {
+    opacity: 1,
+    duration: 1,
+    delay: 0.3,
+    ease: 'power3.out'
+  });
+  gsap.to('.hero-image', {
+    opacity: 1,
+    scale: 1,
+    duration: 1.2,
+    delay: 0.5,
+    ease: 'back.out(0.3)'
+  });
+
+  // Chapter animations with ScrollTrigger
+  gsap.utils.toArray('.chapter-text, .chapter-image, .letter-card').forEach(el => {
+    gsap.fromTo(el, 
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 80%',
+          end: 'bottom 60%',
+          toggleActions: 'play none none reverse'
+        }
+      }
+    );
+  });
+
+  // Image specific animations
+  gsap.fromTo('.chapter-image', 
+    { opacity: 0, scale: 0.9 },
+    {
+      opacity: 1,
+      scale: 1,
+      duration: 1,
+      scrollTrigger: {
+        trigger: '.chapter-image',
+        start: 'top 80%',
+        toggleActions: 'play none none reverse'
+      }
+    }
+  );
+
+  // ==================== NAVIGATION DOTS ====================
+  const sections = ['hero', 'chapter1', 'chapter2', 'chapter3', 'chapter4'];
+  const dots = document.querySelectorAll('.nav-dot');
+  
+  function updateActiveDot() {
+    const scrollPosition = window.scrollY + window.innerHeight / 3;
+    
+    for (let i = 0; i < sections.length; i++) {
+      const section = document.getElementById(sections[i]);
+      if (section) {
+        const sectionTop = section.offsetTop;
+        const sectionBottom = sectionTop + section.offsetHeight;
+        
+        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+          dots.forEach(dot => dot.classList.remove('active'));
+          dots[i].classList.add('active');
+          break;
+        }
+      }
+    }
+  }
+  
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      const targetSection = document.getElementById(sections[index]);
+      if (targetSection) {
+        targetSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+  
+  window.addEventListener('scroll', updateActiveDot);
+  updateActiveDot();
+
+  // ==================== SCROLL BUTTON ====================
+  document.getElementById('scrollBtn')?.addEventListener('click', () => {
+    document.getElementById('chapter1').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // ==================== LOVE LETTER REVEAL ====================
+  const FULL_LETTER_TEXT = `Val, 💕
+
+Si mimi best kwa kusema feelings… but na wewe, huwa inakuja tu 🥺💖
+You make everything feel soft na real, not loud… just deep ✨
+
+Nakuwatch vile uko — the little things 🫶😊
+Na ukweli ni… wewe tu, the way uko, is more than enough 💯❤️
+
+Ukisahau siku moja, rudi usome hii 💌
+You matter… sana kuliko unavyofikiria 🥹💞
+
+Niko hapa… always 🤍🌙
+Love you 💖`;
+
+  let letterRevealed = false;
+  
+  document.getElementById('readLetterBtn')?.addEventListener('click', () => {
+    if (!letterRevealed) {
+      const fullLetterDiv = document.getElementById('fullLetter');
+      const previewP = document.getElementById('letterPreview');
+      
+      fullLetterDiv.style.display = 'block';
+      fullLetterDiv.innerHTML = FULL_LETTER_TEXT.replace(/\n/g, '<br>');
+      previewP.style.display = 'none';
+      document.getElementById('readLetterBtn').textContent = '❤️ i meant every word ❤️';
+      letterRevealed = true;
+      
+      gsap.fromTo(fullLetterDiv, 
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8 }
+      );
+      
+      createHeartWave();
+    }
+  });
+
+  // ==================== HEART EFFECTS ====================
+  function createHeartWave() {
+    for (let i = 0; i < 40; i++) {
+      setTimeout(() => {
+        const heart = document.createElement('div');
+        heart.innerHTML = ['❤️', '💖', '💗', '💕'][Math.floor(Math.random() * 4)];
+        heart.style.position = 'fixed';
+        heart.style.left = Math.random() * window.innerWidth + 'px';
+        heart.style.bottom = '-20px';
+        heart.style.fontSize = (Math.random() * 24 + 16) + 'px';
+        heart.style.pointerEvents = 'none';
+        heart.style.zIndex = '1000';
+        heart.style.transition = 'all 3.5s ease-out';
+        heart.style.opacity = '0.8';
+        document.body.appendChild(heart);
+        
+        setTimeout(() => {
+          heart.style.transform = `translateY(-${window.innerHeight + 100}px) translateX(${(Math.random() - 0.5) * 100}px)`;
+          heart.style.opacity = '0';
+          setTimeout(() => heart.remove(), 3500);
+        }, 50);
+      }, i * 60);
+    }
+  }
+
+  function createMassiveHeartExplosion() {
+    for (let i = 0; i < 150; i++) {
+      setTimeout(() => {
+        const heart = document.createElement('div');
+        const hearts = ['❤️', '💖', '💗', '💓', '💕', '💘', '💝', '💞'];
+        heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+        heart.style.position = 'fixed';
+        heart.style.left = Math.random() * window.innerWidth + 'px';
+        heart.style.bottom = '-30px';
+        heart.style.fontSize = (Math.random() * 30 + 20) + 'px';
+        heart.style.pointerEvents = 'none';
+        heart.style.zIndex = '1000';
+        heart.style.transition = 'all 4s ease-out';
+        heart.style.opacity = '0.9';
+        document.body.appendChild(heart);
+        
+        setTimeout(() => {
+          heart.style.transform = `translateY(-${window.innerHeight + 150}px) translateX(${(Math.random() - 0.5) * 200}px) rotate(${Math.random() * 360}deg)`;
+          heart.style.opacity = '0';
+          setTimeout(() => heart.remove(), 4000);
+        }, 30);
+      }, i * 20);
+    }
+  }
+
+  // ==================== FINAL SURPRISE ====================
+  const surpriseMessages = [
+    "💖 YOU are my greatest surprise. Every single day, you amaze me.",
+    "💗 I made this whole thing because you deserve to feel special. I hope it worked.",
+    "💕 Thank you for existing. Seriously. Thank you for being you.",
+    "💘 Now close your eyes for 5 seconds... I'm sending you a hug from wherever I am.",
+    "🌹 You are the best thing I never knew I was looking for.",
+    "✨ Every love song makes sense now. Because of you."
+  ];
+  
+  let surpriseIndex = 0;
+  
+  document.getElementById('finalSurpriseBtn')?.addEventListener('click', () => {
+    createMassiveHeartExplosion();
+    
+    const surpriseMsg = surpriseMessages[surpriseIndex % surpriseMessages.length];
+    const msgElement = document.getElementById('surpriseMessage');
+    msgElement.innerHTML = surpriseMsg;
+    msgElement.style.opacity = '1';
+    
+    gsap.fromTo(msgElement, 
+      { scale: 0.8 },
+      { scale: 1, duration: 0.5, ease: 'back.out' }
+    );
+    
+    surpriseIndex++;
+    
+    // Also trigger camera shake effect on button
+    const btn = document.getElementById('finalSurpriseBtn');
+    btn.style.transform = 'scale(0.95)';
+    setTimeout(() => { btn.style.transform = 'scale(1)'; }, 150);
+  });
+
+  // ==================== MUSIC CONTROL ====================
+  const audio = document.getElementById('bgMusic');
+  const musicTitle = 'The Reason Why — JP Cooper';
+  let musicPlaying = false;
+  
+  audio.loop = true;
+  audio.volume = 0.3;
+  audio.addEventListener('error', () => {
+    console.log('Failed to load local audio. Make sure the MP3 file is in the her folder.');
+    document.getElementById('musicText').textContent = 'Audio not found';
+  });
+  
+  function toggleMusic() {
+    if (musicPlaying) {
+      audio.pause();
+      document.getElementById('musicIcon').innerHTML = '🎵';
+      document.getElementById('musicText').textContent = `Play "${musicTitle}"`;
+      musicPlaying = false;
+    } else {
+      audio.play().then(() => {
+        document.getElementById('musicIcon').innerHTML = '🎶';
+        document.getElementById('musicText').textContent = `Playing ${musicTitle}`;
+        musicPlaying = true;
+      }).catch(() => {
+        document.getElementById('musicText').textContent = `Click again to play ${musicTitle}`;
+      });
+    }
+  }
+  
+  document.getElementById('musicControl').addEventListener('click', toggleMusic);
+
+  // ==================== INITIAL IMAGES ====================
+  function setImages() {
+    const heroImg = document.getElementById('heroImg');
+    const chapter1Img = document.getElementById('chapter1Img');
+    const chapter2Img = document.getElementById('chapter2Img');
+    
+    // Your image paths here - REPLACE WITH YOUR ACTUAL PATHS
+    const imagePaths = {
+      hero: "her/her.jpeg",
+      chapter1: "her/its.jpeg",
+      chapter2: "her/yes.jpeg"
+    };
+    
+    if (heroImg) heroImg.src = imagePaths.hero;
+    if (chapter1Img) chapter1Img.src = imagePaths.chapter1;
+    if (chapter2Img) chapter2Img.src = imagePaths.chapter2;
+  }
+  
+  setImages();
+
+  // ==================== EXTRA: PARALLAX EFFECT ON HERO ====================
+  window.addEventListener('mousemove', (e) => {
+    const heroImg = document.querySelector('.hero-image');
+    if (heroImg && window.scrollY < 100) {
+      const x = (e.clientX / window.innerWidth - 0.5) * 10;
+      const y = (e.clientY / window.innerHeight - 0.5) * 10;
+      heroImg.style.transform = `translate(${x}px, ${y}px)`;
+    }
+  });
+
+  // Small intro message
+  setTimeout(() => {
+    const msg = document.getElementById('surpriseMessage');
+    if (msg && msg.style.opacity === '0') {
+      // do nothing
+    }
+  }, 3000);
+</script>
+</body>
+</html>
