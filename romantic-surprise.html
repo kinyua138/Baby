@@ -1,9 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>For You, Val ❤️</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Valentine's Memoir · For You, Val</title>
+  
+  <!-- Google Fonts for elegant typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- GSAP for buttery smooth animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  
   <style>
     * {
       margin: 0;
@@ -12,741 +20,758 @@
     }
 
     body {
-      min-height: 100vh;
-      background: linear-gradient(135deg, #0a0a2a 0%, #1a0a2e 50%, #2d1a3a 100%);
-      font-family: 'Segoe UI', 'Poppins', 'Inter', system-ui, -apple-system, sans-serif;
+      background: #0c0b14;
+      font-family: 'Inter', sans-serif;
       overflow-x: hidden;
-      position: relative;
+      color: #f2e6ed;
     }
 
-    #particles-canvas {
+    /* Custom cursor */
+    .custom-cursor {
+      width: 20px;
+      height: 20px;
+      background: rgba(255, 120, 160, 0.5);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.1s ease;
+      mix-blend-mode: screen;
+      backdrop-filter: blur(4px);
+    }
+
+    /* Canvas background for live particles */
+    #particleCanvas {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 1;
+      z-index: 0;
     }
 
+    /* Main container */
     .container {
       position: relative;
       z-index: 10;
-      max-width: 1400px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 2rem;
+      padding: 0 2rem;
+    }
+
+    /* Hero section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 10vw, 7rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #fff 0%, #ffb8d0 40%, #ff88aa 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 1rem;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .hero-subtitle {
+      font-size: clamp(0.9rem, 3vw, 1.1rem);
+      color: rgba(255, 200, 220, 0.7);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      opacity: 0;
+    }
+
+    .hero-image {
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 0 4px rgba(255,120,160,0.3);
+      margin: 2rem 0;
+      opacity: 0;
+      transform: scale(0.9);
+    }
+
+    /* Chapter sections */
+    .chapter {
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 5rem 0;
+      border-bottom: 1px solid rgba(255, 180, 200, 0.1);
+      position: relative;
     }
 
-    .glass-card {
-      background: rgba(255, 255, 255, 0.08);
+    .chapter:last-child {
+      border-bottom: none;
+    }
+
+    .chapter-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .chapter-text {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+
+    .chapter-number {
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      color: #ff88aa;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .chapter-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 400;
+      margin-bottom: 1.5rem;
+      color: #ffd0df;
+    }
+
+    .chapter-description {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: rgba(255, 230, 240, 0.8);
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+    }
+
+    .chapter-image {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 2rem;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+      opacity: 0;
+      transform: translateX(30px);
+      justify-self: center;
+    }
+
+    /* Love letter card */
+    .letter-card {
+      background: linear-gradient(135deg, rgba(255, 200, 220, 0.08), rgba(255, 120, 160, 0.05));
       backdrop-filter: blur(20px);
       border-radius: 2rem;
-      border: 1px solid rgba(255, 200, 220, 0.3);
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05);
-      padding: 2.5rem;
-      width: 100%;
-      transition: all 0.5s ease;
+      padding: 3rem;
+      border: 1px solid rgba(255, 180, 200, 0.2);
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(30px);
     }
 
-    .nav-dots {
+    .letter-card p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      line-height: 1.9;
+      margin-bottom: 1.5rem;
+      color: #f0e0e8;
+    }
+
+    .signature {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-style: italic;
+      color: #ffb8d0;
+      margin-top: 2rem;
+    }
+
+    /* Surprise section */
+    .surprise-section {
+      min-height: 80vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 5rem 0;
+    }
+
+    .surprise-btn {
+      background: linear-gradient(135deg, #ff6688, #ff3366);
+      border: none;
+      padding: 1.2rem 3rem;
+      border-radius: 4rem;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(255, 51, 102, 0.3);
+      margin: 2rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .surprise-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 40px rgba(255, 51, 102, 0.5);
+    }
+
+    .surprise-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .surprise-btn:active::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    /* Floating hearts container */
+    .floating-hearts {
+      position: fixed;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    /* Navigation */
+    .nav-links {
+      position: fixed;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
       gap: 1rem;
-      margin-bottom: 2rem;
     }
 
     .nav-dot {
-      width: 12px;
-      height: 12px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
+      background: rgba(255, 180, 200, 0.4);
       cursor: pointer;
       transition: all 0.3s ease;
     }
 
     .nav-dot.active {
-      background: #ff6b9d;
-      width: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px #ff6b9d;
+      background: #ff88aa;
+      transform: scale(1.3);
+      box-shadow: 0 0 10px #ff88aa;
     }
 
-    .screen {
-      display: none;
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    .nav-dot:hover {
+      background: #ffb8d0;
+      transform: scale(1.2);
     }
 
-    .screen.active {
-      display: block;
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    h1 {
-      font-size: clamp(2.5rem, 6vw, 4.5rem);
-      background: linear-gradient(135deg, #fff 0%, #ffb8d6 50%, #ff6b9d 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin-bottom: 1rem;
-      letter-spacing: -0.02em;
-    }
-
-    .subtitle {
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 1.1rem;
-      line-height: 1.6;
-      margin-bottom: 2rem;
-    }
-
-    .gallery-3d {
-      perspective: 1200px;
-      width: 100%;
-      min-height: 500px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 2rem 0;
-    }
-
-    .carousel-3d {
-      position: relative;
-      width: 300px;
-      height: 400px;
-      transform-style: preserve-3d;
-      animation: rotateCarousel 25s infinite linear;
-      cursor: grab;
-    }
-
-    .carousel-3d:active {
-      cursor: grabbing;
-    }
-
-    @keyframes rotateCarousel {
-      from { transform: rotateY(0deg); }
-      to { transform: rotateY(360deg); }
-    }
-
-    .carousel-item {
-      position: absolute;
-      width: 260px;
-      height: 360px;
-      left: 20px;
-      top: 20px;
-      border-radius: 1.5rem;
-      overflow: hidden;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 2px rgba(255, 255, 255, 0.2);
-      transition: transform 0.3s ease;
-      background: #1a0a2e;
-    }
-
-    .carousel-item:hover {
-      transform: scale(1.08);
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 0 3px #ff6b9d;
-    }
-
-    .carousel-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .btn-group {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 2rem;
-    }
-
-    button {
-      padding: 1rem 2rem;
-      border: none;
-      border-radius: 3rem;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    button:hover {
-      transform: translateY(-3px);
-      background: #ff6b9d;
-      border-color: #ff6b9d;
-      box-shadow: 0 10px 25px rgba(255, 107, 157, 0.3);
-    }
-
-    button.primary {
-      background: linear-gradient(135deg, #ff6b9d, #ff3b7d);
-      border: none;
-      box-shadow: 0 5px 20px rgba(255, 59, 125, 0.4);
-    }
-
-    button.primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 30px rgba(255, 59, 125, 0.5);
-    }
-
-    .floating-heart {
-      position: fixed;
-      pointer-events: none;
-      z-index: 100;
-      font-size: 1.5rem;
-      animation: floatHeart 4s ease-out forwards;
-    }
-
-    @keyframes floatHeart {
-      0% {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-200px) scale(1.5);
-        opacity: 0;
-      }
-    }
-
-    /* 3D Flip Card */
-    .flip-card-container {
-      perspective: 1000px;
-      margin: 2rem 0;
-      cursor: pointer;
-    }
-
-    .flip-card {
-      background: transparent;
-      width: 100%;
-      min-height: 250px;
-      text-align: center;
-      transition: transform 0.8s;
-      transform-style: preserve-3d;
-      position: relative;
-    }
-
-    .flip-card.flipped {
-      transform: rotateY(180deg);
-    }
-
-    .flip-front, .flip-back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      border-radius: 1.5rem;
-      padding: 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      min-height: 250px;
-    }
-
-    .flip-back {
-      transform: rotateY(180deg);
-      background: linear-gradient(135deg, rgba(255, 107, 157, 0.3), rgba(255, 59, 125, 0.2));
-    }
-
-    .flip-front p, .flip-back p {
-      color: white;
-      font-size: 1.3rem;
-      line-height: 1.6;
-    }
-
-    .love-letter {
-      background: linear-gradient(135deg, rgba(255, 107, 157, 0.2), rgba(255, 59, 125, 0.1));
-      border-radius: 1.5rem;
-      padding: 2rem;
-      margin: 2rem 0;
-      border-left: 4px solid #ff6b9d;
-      position: relative;
-      overflow: hidden;
-      font-family: 'Georgia', 'Times New Roman', serif;
-    }
-
-    .love-letter::before {
-      content: '✉️';
-      position: absolute;
-      bottom: -20px;
-      right: -20px;
-      font-size: 8rem;
-      opacity: 0.1;
-    }
-
-    .love-letter p {
-      color: rgba(255, 255, 255, 0.95);
-      font-size: 1.15rem;
-      line-height: 1.9;
-      margin-bottom: 1rem;
-      font-family: 'Georgia', 'Times New Roman', serif;
-    }
-
+    /* Music control */
     .music-control {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 200;
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 50px;
-      padding: 10px 20px;
+      bottom: 2rem;
+      left: 2rem;
+      z-index: 100;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(10px);
+      padding: 0.7rem 1.2rem;
+      border-radius: 3rem;
       display: flex;
       align-items: center;
-      gap: 10px;
-      color: white;
+      gap: 0.8rem;
       cursor: pointer;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255,180,200,0.3);
+      transition: all 0.3s ease;
     }
 
     .music-control:hover {
-      background: rgba(255, 107, 157, 0.8);
+      background: rgba(255, 100, 130, 0.3);
     }
 
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-    }
-
-    .surprise-badge {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      z-index: 200;
-      background: rgba(255, 107, 157, 0.8);
-      border-radius: 50px;
-      padding: 8px 16px;
-      font-size: 0.9rem;
-      color: white;
-      cursor: pointer;
-      animation: pulse 2s infinite;
-    }
-
-    @media (max-width: 768px) {
-      .container { padding: 1rem; }
-      .glass-card { padding: 1.5rem; }
-      .carousel-3d { width: 250px; height: 330px; }
-      .carousel-item { width: 210px; height: 290px; left: 20px; top: 20px; }
-      .flip-front p, .flip-back p { font-size: 1rem; }
-      .music-control {
-        left: 50%;
-        transform: translateX(-50%);
-        width: calc(100% - 40px);
-        max-width: 360px;
-        bottom: 20px;
-        justify-content: center;
-        padding: 12px 16px;
-        font-size: 0.95rem;
+    /* Responsive */
+    @media (max-width: 900px) {
+      .chapter-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
       }
-      .music-control span {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+      .chapter-image {
+        order: -1;
       }
-      .surprise-badge {
-        left: 50%;
-        transform: translateX(-50%);
-        bottom: 76px;
-        width: auto;
-        padding: 8px 18px;
+      .nav-links {
+        right: 1rem;
+      }
+      .letter-card {
+        padding: 1.5rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 0 1rem;
+      }
+      .hero-image {
+        width: 200px;
+        height: 200px;
+      }
+      .chapter-title {
+        font-size: 1.8rem;
       }
     }
   </style>
 </head>
 <body>
 
-<canvas id="particles-canvas"></canvas>
+<div class="custom-cursor" id="customCursor"></div>
+<canvas id="particleCanvas"></canvas>
+<div class="floating-hearts" id="floatingHearts"></div>
 
-<div class="music-control" id="musicToggle">
-  <span>🎵</span>
-  <span id="musicStatus">Play “Perfect” by Ed Sheeran</span>
+<!-- Navigation dots -->
+<div class="nav-links" id="navLinks">
+  <div class="nav-dot active" data-section="0"></div>
+  <div class="nav-dot" data-section="1"></div>
+  <div class="nav-dot" data-section="2"></div>
+  <div class="nav-dot" data-section="3"></div>
+  <div class="nav-dot" data-section="4"></div>
 </div>
 
-<div class="surprise-badge" id="secretSurprise">
-  🎁 Secret Surprise
+<!-- Music control -->
+<div class="music-control" id="musicControl">
+  <span id="musicIcon">🎵</span>
+  <span id="musicText">play music</span>
 </div>
 
 <div class="container">
-  <div class="glass-card">
-    <div class="nav-dots" id="navDots">
-      <div class="nav-dot active" data-screen="0"></div>
-      <div class="nav-dot" data-screen="1"></div>
-      <div class="nav-dot" data-screen="2"></div>
-      <div class="nav-dot" data-screen="3"></div>
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <h1 class="hero-title">For You, Val</h1>
+    <p class="hero-subtitle">a story written in heartbeats</p>
+    <img class="hero-image" id="heroImg" alt="Val" src="her/WhatsApp Image 2026-04-16 at 11.52.42.jpeg" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 300 300%22%3E%3Ccircle cx=%22150%22 cy=%22150%22 r=%22150%22 fill=%22%23331a2e%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23ff88aa%22 font-size=%2240%22%3E💖%3C/text%3E%3C/svg%3E'">
+    <div style="margin-top: 2rem;">
+      <button class="surprise-btn" id="scrollBtn">begin the journey →</button>
     </div>
+  </section>
 
-    <!-- Screen 0: Welcome -->
-    <div class="screen active" id="screen0">
-      <div style="text-align: center;">
-        <h1>✨ For You, Val ✨</h1>
-        <p class="subtitle">I made something special... just because you deserve it.</p>
-        <div style="margin: 3rem 0;">
-          <div style="font-size: 5rem; animation: pulse 2s infinite;">💖</div>
-        </div>
-        <div class="btn-group">
-          <button class="primary" onclick="goToScreen(1)">Open →</button>
-        </div>
+  <!-- Chapter 1: The First Moment -->
+  <section class="chapter" id="chapter1">
+    <div class="chapter-content">
+      <div class="chapter-text">
+        <div class="chapter-number">01</div>
+        <h2 class="chapter-title">the first moment</h2>
+        <p class="chapter-description">I don't remember exactly when it happened. Maybe it was the first time you laughed at something stupid I said. Maybe it was the way you looked at me like I actually mattered. All I know is that somewhere between hello and now, you became the most important person in my world.</p>
+        <p class="chapter-description">You walked into my life like you'd always been there. Quietly. Gently. And suddenly, everything felt different. Better. Brighter.</p>
       </div>
+      <img class="chapter-image" id="chapter1Img" alt="Memory" src="her/WhatsApp Image 2026-04-16 at 11.52.42 (1).jpeg" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 400%22%3E%3Crect width=%22400%22 height=%22400%22 fill=%22%23331a2e%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23ff88aa%22 font-size=%2230%22%3E💕%3C/text%3E%3C/svg%3E'">
     </div>
+  </section>
 
-    <!-- Screen 1: 3D Gallery -->
-    <div class="screen" id="screen1">
-      <div style="text-align: center;">
-        <h1>📸 You</h1>
-        <p class="subtitle">Just you. Beautiful you.</p>
+  <!-- Chapter 2: The Little Things -->
+  <section class="chapter" id="chapter2">
+    <div class="chapter-content">
+      <div class="chapter-text">
+        <div class="chapter-number">02</div>
+        <h2 class="chapter-title">the little things</h2>
+        <p class="chapter-description">It's not one big thing. It's a thousand small ones. The way you get excited about the little joys. The way you care without expecting anything back. The way your eyes light up when you talk about something you love.</p>
+        <p class="chapter-description">I notice everything about you. The way you tilt your head when you're thinking. The way your voice softens when you're tired. The way you exist — beautifully, gently, without even trying.</p>
       </div>
-      <div class="gallery-3d">
-        <div class="carousel-3d" id="carousel3d"></div>
-      </div>
-      <div class="btn-group">
-        <button onclick="goToScreen(0)">← Back</button>
-        <button class="primary" onclick="goToScreen(2)">Next →</button>
-      </div>
+      <img class="chapter-image" id="chapter2Img" alt="Memory" src="her/WhatsApp Image 2026-04-16 at 11.52.42 (2).jpeg" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 400%22%3E%3Crect width=%22400%22 height=%22400%22 fill=%22%23331a2e%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23ff88aa%22 font-size=%2230%22%3E✨%3C/text%3E%3C/svg%3E'">
     </div>
+  </section>
 
-    <!-- Screen 2: Surprise Messages -->
-    <div class="screen" id="screen2">
-      <div style="text-align: center;">
-        <h1>💝 A Little Surprise</h1>
-        <p class="subtitle">Tap the card... I've been saving these words for you 💌</p>
-      </div>
-      <div class="flip-card-container" onclick="flipCard()">
-        <div class="flip-card" id="flipCard">
-          <div class="flip-front">
-            <p>✨ Tap me for a surprise ✨<br><span style="font-size: 2rem;">💕</span></p>
-          </div>
-          <div class="flip-back">
-            <p id="surpriseMessage">💖</p>
-          </div>
-        </div>
-      </div>
-      <div class="btn-group">
-        <button onclick="goToScreen(1)">← Back</button>
-        <button class="primary" onclick="randomMessage()">New Message 🎀</button>
-        <button onclick="goToScreen(3)">Next →</button>
-      </div>
+  <!-- Chapter 3: The Letter -->
+  <section class="chapter" id="chapter3">
+    <div class="letter-card" id="letterCard">
+      <div class="chapter-number" style="margin-bottom: 1rem;">03</div>
+      <h2 class="chapter-title" style="margin-bottom: 2rem;">a letter for you</h2>
+      <p id="letterPreview">"I've rewritten this so many times. Not because I don't know what to say — but because words feel too small for what you mean to me."</p>
+      <button class="surprise-btn" id="readLetterBtn" style="margin-top: 1.5rem; padding: 0.8rem 2rem; font-size: 0.9rem;">read the full letter →</button>
+      <div class="signature" id="fullLetter" style="display: none;"></div>
     </div>
+  </section>
 
-    <!-- Screen 3: Love Letter -->
-    <div class="screen" id="screen3">
-      <div style="text-align: center;">
-        <h1>💌 Something From My Heart</h1>
-        <p class="subtitle">Read this when you need a reminder of how much you matter...</p>
-      </div>
-      <div class="love-letter" id="loveLetter">
-        <p id="letterContent"></p>
-      </div>
-      <div class="btn-group">
-        <button onclick="goToScreen(2)">← Back</button>
-        <button class="primary" onclick="createHeartExplosion()">Send You Love 💕</button>
-        <button onclick="restart()">Start Over ↺</button>
-      </div>
-    </div>
-  </div>
+  <!-- Chapter 4: The Surprise -->
+  <section class="surprise-section" id="chapter4">
+    <h2 class="chapter-title" style="margin-bottom: 1rem;">one last thing</h2>
+    <p class="chapter-description" style="max-width: 500px; margin: 0 auto 2rem;">I saved something special for the end. Click below when you're ready.</p>
+    <button class="surprise-btn" id="finalSurpriseBtn">💗 open your surprise 💗</button>
+    <p id="surpriseMessage" style="margin-top: 2rem; font-size: 1.2rem; opacity: 0; transition: all 0.5s ease;"></p>
+  </section>
 </div>
 
 <audio id="bgMusic" loop preload="auto">
-  <source src="her/Ed%20Sheeran%20-%20Perfect%20(Official%20Music%20Video).mp3" type="audio/mpeg">
+  <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3" type="audio/mpeg">
 </audio>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
-  // ==================== HER IMAGES ====================
-  const herImages = [
-    "her/WhatsApp Image 2026-04-16 at 11.52.42.jpeg",
-    "her/WhatsApp Image 2026-04-16 at 11.52.42 (1).jpeg",
-    "her/WhatsApp Image 2026-04-16 at 11.52.42 (2).jpeg"
-  ];
+  // ==================== CUSTOM CURSOR ====================
+  const cursor = document.getElementById('customCursor');
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
+  });
   
-  // ==================== PERSONALIZED SURPRISE MESSAGES ====================
-  const surpriseMessages = [
-    "💖 You don't even realize how often you cross my mind... it's constant. 💖",
-    "🌸 Every time I see your face, my whole day gets brighter. You're my sunshine. 🌸",
-    "💫 You're not just beautiful... you're the kind of beautiful that makes poetry make sense. 💫",
-    "✨ I catch myself smiling for no reason... then I realize I was thinking of you. ✨",
-    "💕 If I had to choose between breathing and loving you... I'd use my last breath to say your name. 💕",
-    "🌙 Late nights and early mornings... you're the only thought that stays. 🌙",
-    "💗 You make my heart do things I can't explain... and I love every second of it. 💗",
-    "🌟 You're my favorite reason to lose sleep. Worth every tired morning. 🌟",
-    "💘 I didn't believe in perfect until I met you. Now I see it every day. 💘",
-    "🎀 Just so you know... you're the best thing that's ever happened to me. Period. 🎀"
-  ];
-  
-  // ==================== HEARTFELT LETTER (PERSONAL & TOUCHY) ====================
-  const loveLetter = `Hey Val, 💕
+  document.addEventListener('mouseenter', () => cursor.style.opacity = '1');
+  document.addEventListener('mouseleave', () => cursor.style.opacity = '0');
 
-I'm not the best with words... but with you, I want to try.
-
-There's something about you that I can't quite explain. Maybe it's the way you smile, or the way you make everything feel lighter just by being there. Maybe it's the way you look at me sometimes... like you actually see me.
-
-I've been thinking about you a lot lately. Not in a weird way (okay, maybe a little 😅) — but in a "I can't believe someone like you exists" way. You're not like anyone I've ever met. You're real. You're warm. You're you... and that's more than enough.
-
-I made this little thing for you because I wanted you to know that someone out there thinks you're incredible. Someone notices the little things about you. Someone stays up late wondering if you're happy.
-
-I hope this makes you smile. I hope you feel loved. Because you are. More than you'll ever know.
-
-Thank you for existing, Val. Seriously.
-
-Yours,
-Tosh 💌
-
-P.S. — You're beautiful. Like, really beautiful. Just in case you forgot today. 💖`;
-  
-  // ==================== ED SHEERAN - PERFECT ====================
-  const musicTitle = 'Perfect — Ed Sheeran';
-  let musicPlaying = false;
-  const musicToggle = document.getElementById('musicToggle');
-  const musicStatus = document.getElementById('musicStatus');
-  let audioElement = null;
-  
-  function initMusic() {
-    audioElement = document.getElementById('bgMusic');
-    if (!audioElement) return;
-    audioElement.loop = true;
-    audioElement.volume = 0.3;
-    audioElement.addEventListener('error', () => {
-      console.log('Failed to load local audio. Make sure the MP3 file is in the her folder.');
-      musicStatus.textContent = 'Audio not found';
-    });
-    musicStatus.textContent = `Play “${musicTitle}”`;
-  }
-  
-  function toggleMusic() {
-    if (!audioElement) {
-      initMusic();
-    }
-    
-    if (!audioElement) return;
-    if (musicPlaying) {
-      audioElement.pause();
-      musicStatus.textContent = `Play “${musicTitle}”`;
-      musicPlaying = false;
-    } else {
-      audioElement.play().then(() => {
-        musicStatus.textContent = `Playing ${musicTitle}`;
-        musicPlaying = true;
-      }).catch(() => {
-        musicStatus.textContent = `Click again to play ${musicTitle}`;
-      });
-    }
-  }
-  
-  musicToggle.addEventListener('click', toggleMusic);
-  
-  // ==================== 3D CAROUSEL ====================
-  function setup3DCarousel() {
-    const container = document.getElementById('carousel3d');
-    if (!container) return;
-    
-    container.innerHTML = '';
-    const numImages = herImages.length;
-    const angleStep = 360 / numImages;
-    
-    herImages.forEach((src, index) => {
-      const angle = angleStep * index;
-      const radian = (angle * Math.PI) / 180;
-      const radius = 280;
-      const x = Math.sin(radian) * radius;
-      const z = Math.cos(radian) * radius;
-      
-      const item = document.createElement('div');
-      item.className = 'carousel-item';
-      item.style.transform = `translate3d(${x}px, 0, ${z}px) rotateY(${angle}deg)`;
-      
-      const img = document.createElement('img');
-      img.src = src;
-      img.alt = `Val`;
-      img.onerror = () => {
-        img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"%3E%3Crect width="200" height="200" fill="%23ff6b9d"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="white" font-size="14"%3E💖 Val%3C/text%3E%3C/svg%3E';
-      };
-      item.appendChild(img);
-      container.appendChild(item);
-    });
-    
-    let mouseX = 0;
-    let rotation = 0;
-    
-    container.addEventListener('mousemove', (e) => {
-      const rect = container.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      mouseX = (e.clientX - centerX) / rect.width;
-      rotation = mouseX * 180;
-      container.style.transform = `rotateY(${rotation}deg)`;
-    });
-    
-    container.addEventListener('mouseleave', () => {
-      container.style.animation = 'rotateCarousel 25s infinite linear';
-    });
-    
-    container.addEventListener('mouseenter', () => {
-      container.style.animation = 'none';
-    });
-  }
-  
-  // ==================== PARTICLES ====================
-  const canvas = document.getElementById('particles-canvas');
-  let ctx = canvas.getContext('2d');
+  // ==================== PARTICLE SYSTEM (LIVE BACKGROUND) ====================
+  const canvas = document.getElementById('particleCanvas');
+  const ctx = canvas.getContext('2d');
   let particles = [];
-  
+  let particleCount = 80;
+
   function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
   }
-  
-  function createParticles() {
-    for (let i = 0; i < 100; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        radius: Math.random() * 3 + 1,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5 + 0.2,
-        alpha: Math.random() * 0.5 + 0.2,
-        color: `hsl(${Math.random() * 60 + 300}, 100%, 70%)`
-      });
+
+  class Particle {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2 + 1;
+      this.speedX = (Math.random() - 0.5) * 0.3;
+      this.speedY = (Math.random() - 0.5) * 0.3 + 0.1;
+      this.color = `hsla(${Math.random() * 40 + 320}, 80%, 70%, ${Math.random() * 0.3 + 0.1})`;
+    }
+
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      
+      if (this.x < 0) this.x = canvas.width;
+      if (this.x > canvas.width) this.x = 0;
+      if (this.y < 0) this.y = canvas.height;
+      if (this.y > canvas.height) this.y = 0;
+    }
+
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+      ctx.fill();
     }
   }
-  
+
+  function initParticles() {
+    particles = [];
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+  }
+
   function animateParticles() {
-    if (!ctx) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    particles.forEach(p => {
-      p.x += p.vx;
-      p.y += p.vy;
-      
-      if (p.x < 0) p.x = canvas.width;
-      if (p.x > canvas.width) p.x = 0;
-      if (p.y < 0) p.y = canvas.height;
-      if (p.y > canvas.height) p.y = 0;
-      
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-      ctx.fillStyle = p.color;
-      ctx.fill();
+    particles.forEach(particle => {
+      particle.update();
+      particle.draw();
     });
-    
     requestAnimationFrame(animateParticles);
   }
-  
-  // ==================== HEART EXPLOSION ====================
-  function createHeartExplosion() {
-    for (let i = 0; i < 60; i++) {
-      setTimeout(() => {
-        const heart = document.createElement('div');
-        heart.className = 'floating-heart';
-        const hearts = ['❤️', '💖', '💗', '💓', '💕', '💘', '💝', '💞'];
-        heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
-        heart.style.left = Math.random() * window.innerWidth + 'px';
-        heart.style.bottom = '-50px';
-        heart.style.fontSize = (Math.random() * 25 + 20) + 'px';
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 4000);
-      }, i * 40);
-    }
-  }
-  
-  // ==================== SCREEN NAVIGATION ====================
-  function goToScreen(index) {
-    for (let i = 0; i < 4; i++) {
-      const screen = document.getElementById(`screen${i}`);
-      if (screen) screen.classList.remove('active');
-    }
-    const targetScreen = document.getElementById(`screen${index}`);
-    if (targetScreen) targetScreen.classList.add('active');
-    
-    const dots = document.querySelectorAll('.nav-dot');
-    dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
-    
-    if (index === 1) setTimeout(setup3DCarousel, 100);
-    if (index === 3) animateLoveLetter();
-  }
-  
-  // ==================== FLIP CARD ====================
-  let isFlipped = false;
-  
-  function flipCard() {
-    const card = document.getElementById('flipCard');
-    if (!card) return;
-    
-    isFlipped = !isFlipped;
-    if (isFlipped) {
-      card.classList.add('flipped');
-      const randomMsg = surpriseMessages[Math.floor(Math.random() * surpriseMessages.length)];
-      document.getElementById('surpriseMessage').innerHTML = randomMsg;
-    } else {
-      card.classList.remove('flipped');
-    }
-  }
-  
-  function randomMessage() {
-    const randomMsg = surpriseMessages[Math.floor(Math.random() * surpriseMessages.length)];
-    document.getElementById('surpriseMessage').innerHTML = randomMsg;
-    if (!isFlipped) {
-      flipCard();
-    }
-    createHeartExplosion();
-  }
-  
-  // ==================== LOVE LETTER ====================
-  function animateLoveLetter() {
-    const letterElement = document.getElementById('letterContent');
-    if (!letterElement) return;
-    letterElement.style.opacity = '0';
-    setTimeout(() => {
-      letterElement.innerHTML = loveLetter.replace(/\n/g, '<br>');
-      letterElement.style.transition = 'opacity 2s ease';
-      letterElement.style.opacity = '1';
-    }, 100);
-  }
-  
-  // ==================== SECRET SURPRISE ====================
-  function secretSurprise() {
-    createHeartExplosion();
-    setTimeout(() => {
-      alert('💖 YOU are the real surprise! 💖\n\nI made this whole thing just for you because you deserve to feel special. Hope it made you smile! 😊');
-    }, 500);
-  }
-  
-  // ==================== RESTART ====================
-  function restart() {
-    goToScreen(0);
-    isFlipped = false;
-    const card = document.getElementById('flipCard');
-    if (card) card.classList.remove('flipped');
-  }
-  
-  // ==================== INITIALIZE ====================
-  window.addEventListener('load', () => {
+
+  window.addEventListener('resize', () => {
     resizeCanvas();
-    createParticles();
-    animateParticles();
-    setup3DCarousel();
-    initMusic();
+    initParticles();
+  });
+
+  resizeCanvas();
+  initParticles();
+  animateParticles();
+
+  // ==================== GSAP ANIMATIONS ====================
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Hero animations
+  gsap.to('.hero-title', {
+    opacity: 1,
+    y: 0,
+    duration: 1.2,
+    ease: 'power3.out'
+  });
+  gsap.to('.hero-subtitle', {
+    opacity: 1,
+    duration: 1,
+    delay: 0.3,
+    ease: 'power3.out'
+  });
+  gsap.to('.hero-image', {
+    opacity: 1,
+    scale: 1,
+    duration: 1.2,
+    delay: 0.5,
+    ease: 'back.out(0.3)'
+  });
+
+  // Chapter animations with ScrollTrigger
+  gsap.utils.toArray('.chapter-text, .chapter-image, .letter-card').forEach(el => {
+    gsap.fromTo(el, 
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 80%',
+          end: 'bottom 60%',
+          toggleActions: 'play none none reverse'
+        }
+      }
+    );
+  });
+
+  // Image specific animations
+  gsap.fromTo('.chapter-image', 
+    { opacity: 0, scale: 0.9 },
+    {
+      opacity: 1,
+      scale: 1,
+      duration: 1,
+      scrollTrigger: {
+        trigger: '.chapter-image',
+        start: 'top 80%',
+        toggleActions: 'play none none reverse'
+      }
+    }
+  );
+
+  // ==================== NAVIGATION DOTS ====================
+  const sections = ['hero', 'chapter1', 'chapter2', 'chapter3', 'chapter4'];
+  const dots = document.querySelectorAll('.nav-dot');
+  
+  function updateActiveDot() {
+    const scrollPosition = window.scrollY + window.innerHeight / 3;
     
-    const dots = document.querySelectorAll('.nav-dot');
-    dots.forEach((dot, idx) => dot.addEventListener('click', () => goToScreen(idx)));
-    
-    document.getElementById('secretSurprise').addEventListener('click', secretSurprise);
+    for (let i = 0; i < sections.length; i++) {
+      const section = document.getElementById(sections[i]);
+      if (section) {
+        const sectionTop = section.offsetTop;
+        const sectionBottom = sectionTop + section.offsetHeight;
+        
+        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+          dots.forEach(dot => dot.classList.remove('active'));
+          dots[i].classList.add('active');
+          break;
+        }
+      }
+    }
+  }
+  
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      const targetSection = document.getElementById(sections[index]);
+      if (targetSection) {
+        targetSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
   });
   
-  window.addEventListener('resize', resizeCanvas);
+  window.addEventListener('scroll', updateActiveDot);
+  updateActiveDot();
+
+  // ==================== SCROLL BUTTON ====================
+  document.getElementById('scrollBtn')?.addEventListener('click', () => {
+    document.getElementById('chapter1').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // ==================== LOVE LETTER REVEAL ====================
+  const FULL_LETTER_TEXT = `Val, 💕
+
+I'm not good at this. Saying things out loud. Putting feelings into words that don't feel clumsy or small. But with you, I want to try.
+
+You make me feel things I didn't know I could feel. Not the dramatic movie kind — the quiet kind. The kind that stays. The kind that makes me smile at 2am just because I thought of something you said earlier.
+
+I notice everything about you. The way you tilt your head when you're thinking. The way your voice softens when you're tired. The way you exist — gently, beautifully, without even trying.
+
+You don't have to be perfect. You don't have to have everything figured out. You just have to be you. Because you, exactly as you are right now, is already my favorite person.
+
+I hope you save this. Read it on days when you forget how much you matter. Because you do. More than you'll ever know.
+
+I'm here. For the good days, the hard days, the quiet mornings, and the late nights.
+
+You are loved. Deeply. Truly. Always.
+
+Yours,
+Love 💖`;
+
+  let letterRevealed = false;
   
-  window.goToScreen = goToScreen;
-  window.flipCard = flipCard;
-  window.randomMessage = randomMessage;
-  window.createHeartExplosion = createHeartExplosion;
-  window.restart = restart;
+  document.getElementById('readLetterBtn')?.addEventListener('click', () => {
+    if (!letterRevealed) {
+      const fullLetterDiv = document.getElementById('fullLetter');
+      const previewP = document.getElementById('letterPreview');
+      
+      fullLetterDiv.style.display = 'block';
+      fullLetterDiv.innerHTML = FULL_LETTER_TEXT.replace(/\n/g, '<br>');
+      previewP.style.display = 'none';
+      document.getElementById('readLetterBtn').textContent = '❤️ i meant every word ❤️';
+      letterRevealed = true;
+      
+      gsap.fromTo(fullLetterDiv, 
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8 }
+      );
+      
+      createHeartWave();
+    }
+  });
+
+  // ==================== HEART EFFECTS ====================
+  function createHeartWave() {
+    for (let i = 0; i < 40; i++) {
+      setTimeout(() => {
+        const heart = document.createElement('div');
+        heart.innerHTML = ['❤️', '💖', '💗', '💕'][Math.floor(Math.random() * 4)];
+        heart.style.position = 'fixed';
+        heart.style.left = Math.random() * window.innerWidth + 'px';
+        heart.style.bottom = '-20px';
+        heart.style.fontSize = (Math.random() * 24 + 16) + 'px';
+        heart.style.pointerEvents = 'none';
+        heart.style.zIndex = '1000';
+        heart.style.transition = 'all 3.5s ease-out';
+        heart.style.opacity = '0.8';
+        document.body.appendChild(heart);
+        
+        setTimeout(() => {
+          heart.style.transform = `translateY(-${window.innerHeight + 100}px) translateX(${(Math.random() - 0.5) * 100}px)`;
+          heart.style.opacity = '0';
+          setTimeout(() => heart.remove(), 3500);
+        }, 50);
+      }, i * 60);
+    }
+  }
+
+  function createMassiveHeartExplosion() {
+    for (let i = 0; i < 150; i++) {
+      setTimeout(() => {
+        const heart = document.createElement('div');
+        const hearts = ['❤️', '💖', '💗', '💓', '💕', '💘', '💝', '💞'];
+        heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+        heart.style.position = 'fixed';
+        heart.style.left = Math.random() * window.innerWidth + 'px';
+        heart.style.bottom = '-30px';
+        heart.style.fontSize = (Math.random() * 30 + 20) + 'px';
+        heart.style.pointerEvents = 'none';
+        heart.style.zIndex = '1000';
+        heart.style.transition = 'all 4s ease-out';
+        heart.style.opacity = '0.9';
+        document.body.appendChild(heart);
+        
+        setTimeout(() => {
+          heart.style.transform = `translateY(-${window.innerHeight + 150}px) translateX(${(Math.random() - 0.5) * 200}px) rotate(${Math.random() * 360}deg)`;
+          heart.style.opacity = '0';
+          setTimeout(() => heart.remove(), 4000);
+        }, 30);
+      }, i * 20);
+    }
+  }
+
+  // ==================== FINAL SURPRISE ====================
+  const surpriseMessages = [
+    "💖 YOU are my greatest surprise. Every single day, you amaze me.",
+    "💗 I made this whole thing because you deserve to feel special. I hope it worked.",
+    "💕 Thank you for existing. Seriously. Thank you for being you.",
+    "💘 Now close your eyes for 5 seconds... I'm sending you a hug from wherever I am.",
+    "🌹 You are the best thing I never knew I was looking for.",
+    "✨ Every love song makes sense now. Because of you."
+  ];
+  
+  let surpriseIndex = 0;
+  
+  document.getElementById('finalSurpriseBtn')?.addEventListener('click', () => {
+    createMassiveHeartExplosion();
+    
+    const surpriseMsg = surpriseMessages[surpriseIndex % surpriseMessages.length];
+    const msgElement = document.getElementById('surpriseMessage');
+    msgElement.innerHTML = surpriseMsg;
+    msgElement.style.opacity = '1';
+    
+    gsap.fromTo(msgElement, 
+      { scale: 0.8 },
+      { scale: 1, duration: 0.5, ease: 'back.out' }
+    );
+    
+    surpriseIndex++;
+    
+    // Also trigger camera shake effect on button
+    const btn = document.getElementById('finalSurpriseBtn');
+    btn.style.transform = 'scale(0.95)';
+    setTimeout(() => { btn.style.transform = 'scale(1)'; }, 150);
+  });
+
+  // ==================== MUSIC CONTROL ====================
+  const audio = document.getElementById('bgMusic');
+  let musicPlaying = false;
+  
+  document.getElementById('musicControl')?.addEventListener('click', () => {
+    if (musicPlaying) {
+      audio.pause();
+      document.getElementById('musicIcon').innerHTML = '🎵';
+      document.getElementById('musicText').innerHTML = 'play music';
+      musicPlaying = false;
+    } else {
+      audio.play().catch(e => console.log('Autoplay blocked - click to play'));
+      document.getElementById('musicIcon').innerHTML = '🎶';
+      document.getElementById('musicText').innerHTML = 'playing';
+      musicPlaying = true;
+    }
+  });
+
+  // ==================== INITIAL IMAGES ====================
+  function setImages() {
+    const heroImg = document.getElementById('heroImg');
+    const chapter1Img = document.getElementById('chapter1Img');
+    const chapter2Img = document.getElementById('chapter2Img');
+    
+    // Your image paths here - REPLACE WITH YOUR ACTUAL PATHS
+    const imagePaths = {
+      hero: "her/WhatsApp Image 2026-04-16 at 11.52.42.jpeg",
+      chapter1: "her/WhatsApp Image 2026-04-16 at 11.52.42 (1).jpeg",
+      chapter2: "her/WhatsApp Image 2026-04-16 at 11.52.42 (2).jpeg"
+    };
+    
+    if (heroImg) heroImg.src = imagePaths.hero;
+    if (chapter1Img) chapter1Img.src = imagePaths.chapter1;
+    if (chapter2Img) chapter2Img.src = imagePaths.chapter2;
+  }
+  
+  setImages();
+
+  // ==================== EXTRA: PARALLAX EFFECT ON HERO ====================
+  window.addEventListener('mousemove', (e) => {
+    const heroImg = document.querySelector('.hero-image');
+    if (heroImg && window.scrollY < 100) {
+      const x = (e.clientX / window.innerWidth - 0.5) * 10;
+      const y = (e.clientY / window.innerHeight - 0.5) * 10;
+      heroImg.style.transform = `translate(${x}px, ${y}px)`;
+    }
+  });
+
+  // Small intro message
+  setTimeout(() => {
+    const msg = document.getElementById('surpriseMessage');
+    if (msg && msg.style.opacity === '0') {
+      // do nothing
+    }
+  }, 3000);
 </script>
 </body>
 </html>
