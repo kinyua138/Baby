@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Valentine's Memoir · For You, Val</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valentine's Memoir · For You, ✨ Karen 💖</title>
   
   <!-- Google Fonts for elegant typography -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -307,6 +307,13 @@
       background: rgba(255, 100, 130, 0.3);
     }
 
+    .surprise-btn:focus-visible,
+    .nav-dot:focus-visible,
+    .music-control:focus-visible {
+      outline: 3px solid #ffd7e7;
+      outline-offset: 3px;
+    }
+
     /* Responsive */
     @media (max-width: 900px) {
       .chapter-content {
@@ -327,7 +334,7 @@
 
     @media (max-width: 600px) {
       .container {
-        padding: 0 1rem;
+        padding: 0 1rem 6rem;
       }
       .hero-image {
         width: 200px;
@@ -335,6 +342,51 @@
       }
       .chapter-title {
         font-size: 1.8rem;
+      }
+      .chapter {
+        padding: 3rem 0;
+      }
+      .nav-links {
+        right: 50%;
+        bottom: 1rem;
+        top: auto;
+        transform: translateX(50%);
+        flex-direction: row;
+        gap: 0.6rem;
+        background: rgba(12, 11, 20, 0.75);
+        padding: 0.5rem 0.8rem;
+        border-radius: 999px;
+        backdrop-filter: blur(8px);
+      }
+      .music-control {
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        bottom: 3.2rem;
+        width: min(calc(100% - 2rem), 360px);
+        justify-content: center;
+      }
+      .letter-card {
+        padding: 1.25rem;
+      }
+      .surprise-btn {
+        width: 100%;
+        min-height: 44px;
+      }
+    }
+
+    @media (hover: none) and (pointer: coarse) {
+      .custom-cursor {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
       }
     }
   </style>
@@ -357,19 +409,18 @@
 <!-- Music control -->
 <div class="music-control" id="musicControl">
   <span id="musicIcon">🎵</span>
-  <span id="musicText">play music</span>
+  <span id="musicText">play our song</span>
 </div>
 
 <div class="container">
   <!-- Hero Section -->
   <section class="hero" id="hero">
-    <h1 class="hero-title">For You, Val</h1>
-    <p class="hero-subtitle">a story written in heartbeats</p>
-    <img class="hero-image" id="heroImg" alt="Val" src="her/WhatsApp Image 2026-04-16 at 11.52.42.jpeg" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 300 300%22%3E%3Ccircle cx=%22150%22 cy=%22150%22 r=%22150%22 fill=%22%23331a2e%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23ff88aa%22 font-size=%2240%22%3E💖%3C/text%3E%3C/svg%3E'">
+    <h1 class="hero-title">✨ For You, Karen 💖</h1>
+    <p class="hero-subtitle">a story written in heartbeats, whispered in starlight</p>
+    <img class="hero-image" id="heroImg" alt="✨ Karen 💖" src="her/WhatsApp Image 2026-04-16 at 11.52.42.jpeg" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 300 300%22%3E%3Ccircle cx=%22150%22 cy=%22150%22 r=%22150%22 fill=%22%23331a2e%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23ff88aa%22 font-size=%2240%22%3E💖%3C/text%3E%3C/svg%3E'"
     <div style="margin-top: 2rem;">
       <button class="surprise-btn" id="scrollBtn">begin the journey →</button>
-    </div>
-  </section>
+    </div>    <p style="margin-top: 2rem; color: rgba(255, 200, 220, 0.7); font-size: 0.95rem; max-width: 500px; line-height: 1.6;">This is my way of telling you that you've changed my life. That you matter beyond measure. That loving you is the easiest, most beautiful thing I've ever done. 💕</p>  </section>
 
   <!-- Chapter 1: The First Moment -->
   <section class="chapter" id="chapter1">
@@ -377,8 +428,8 @@
       <div class="chapter-text">
         <div class="chapter-number">01</div>
         <h2 class="chapter-title">the first moment</h2>
-        <p class="chapter-description">I don't remember exactly when it happened. Maybe it was the first time you laughed at something stupid I said. Maybe it was the way you looked at me like I actually mattered. All I know is that somewhere between hello and now, you became the most important person in my world.</p>
-        <p class="chapter-description">You walked into my life like you'd always been there. Quietly. Gently. And suddenly, everything felt different. Better. Brighter.</p>
+        <p class="chapter-description">I don't remember exactly when it happened. Maybe it was the first time you laughed at something stupid I said, and your whole face lit up like you'd discovered pure joy. Maybe it was the way you looked at me like I actually mattered—like I was worthy of your attention, your time, your precious energy. All I know is that somewhere between hello and now, you became the most important person in my world. The anchor. The reason. Everything.</p>
+        <p class="chapter-description">You walked into my life like you'd always been there. Quietly. Gently. Like you were the missing piece I didn't even know I was searching for. And suddenly, everything felt different. Better. Brighter. Alive. You didn't just change my world—you became my world. My entire universe shifted on its axis the moment I truly saw you.</p>
       </div>
       <img class="chapter-image" id="chapter1Img" alt="Memory" src="her/WhatsApp Image 2026-04-16 at 11.52.42 (1).jpeg" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 400%22%3E%3Crect width=%22400%22 height=%22400%22 fill=%22%23331a2e%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23ff88aa%22 font-size=%2230%22%3E💕%3C/text%3E%3C/svg%3E'">
     </div>
@@ -390,8 +441,8 @@
       <div class="chapter-text">
         <div class="chapter-number">02</div>
         <h2 class="chapter-title">the little things</h2>
-        <p class="chapter-description">It's not one big thing. It's a thousand small ones. The way you get excited about the little joys. The way you care without expecting anything back. The way your eyes light up when you talk about something you love.</p>
-        <p class="chapter-description">I notice everything about you. The way you tilt your head when you're thinking. The way your voice softens when you're tired. The way you exist — beautifully, gently, without even trying.</p>
+        <p class="chapter-description">It's not one big thing. It's a thousand small ones, and I've memorized every single detail. The way you get excited about the little joys—like they're treasures only you can see. The way you care without expecting anything back, with a generosity that makes me believe in humanity again. The way your eyes light up when you talk about something you love, like you're sharing a secret the universe whispered only to you.</p>
+        <p class="chapter-description">I notice everything about you. The way you tilt your head when you're thinking, calculating, dreaming. The way your voice softens when you're tired, becoming this vulnerable whisper that makes me want to protect you from the world. The way you exist—beautifully, gently, without even trying—like you were born knowing how to be extraordinary. You're poetry in motion, and I'm completely, utterly mesmerized.</p>
       </div>
       <img class="chapter-image" id="chapter2Img" alt="Memory" src="her/WhatsApp Image 2026-04-16 at 11.52.42 (2).jpeg" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 400%22%3E%3Crect width=%22400%22 height=%22400%22 fill=%22%23331a2e%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23ff88aa%22 font-size=%2230%22%3E✨%3C/text%3E%3C/svg%3E'">
     </div>
@@ -402,18 +453,18 @@
     <div class="letter-card" id="letterCard">
       <div class="chapter-number" style="margin-bottom: 1rem;">03</div>
       <h2 class="chapter-title" style="margin-bottom: 2rem;">a letter for you</h2>
-      <p id="letterPreview">"I've rewritten this so many times. Not because I don't know what to say — but because words feel too small for what you mean to me."</p>
-      <button class="surprise-btn" id="readLetterBtn" style="margin-top: 1.5rem; padding: 0.8rem 2rem; font-size: 0.9rem;">read the full letter →</button>
+      <p id="letterPreview">"I've rewritten this a thousand times. Not because I don't know what to say—but because every word feels too small for what you mean to me. How do I tell you that you're everything?”</p>
+      <button class="surprise-btn" id="readLetterBtn" style="margin-top: 1.5rem; padding: 0.8rem 2rem; font-size: 0.9rem;">read the complete letter →</button>
       <div class="signature" id="fullLetter" style="display: none;"></div>
     </div>
   </section>
 
   <!-- Chapter 4: The Surprise -->
   <section class="surprise-section" id="chapter4">
-    <h2 class="chapter-title" style="margin-bottom: 1rem;">one last thing</h2>
-    <p class="chapter-description" style="max-width: 500px; margin: 0 auto 2rem;">I saved something special for the end. Click below when you're ready.</p>
-    <button class="surprise-btn" id="finalSurpriseBtn">💗 open your surprise 💗</button>
-    <p id="surpriseMessage" style="margin-top: 2rem; font-size: 1.2rem; opacity: 0; transition: all 0.5s ease;"></p>
+    <h2 class="chapter-title" style="margin-bottom: 1rem;">you, forever 💕</h2>
+    <p class="chapter-description" style="max-width: 500px; margin: 0 auto 2rem; font-size: 1.1rem; font-style: italic;">Every moment with you is poetry. Every breath is a prayer of gratitude. You are my greatest love story, my forever dream, my always.</p>
+    <button class="surprise-btn" id="finalSurpriseBtn">� Celebrate Our Love 💋</button>
+    <p id="surpriseMessage" style="margin-top: 2rem; font-size: 1.2rem; opacity: 0; transition: all 0.5s ease; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.8;"></p>
   </section>
 </div>
 
@@ -594,19 +645,30 @@
   });
 
   // ==================== LOVE LETTER REVEAL ====================
-  const FULL_LETTER_TEXT = `Val, 💕
+  const FULL_LETTER_TEXT = `✨ Karen 💖, 💕
 
 Si mimi best kwa kusema feelings… but na wewe, huwa inakuja tu 🥺💖
 You make everything feel soft na real, not loud… just deep ✨
 
-Nakuwatch vile uko — the little things 🫶😊
+Nakuwatch vile uko — the little things, the big things, literally everything 🫶😊
+The way you laugh like your whole body believes in joy. The way your eyes hold galaxies I want to explore forever.
+
 Na ukweli ni… wewe tu, the way uko, is more than enough 💯❤️
+You're not missing a single thing. You're complete. You're perfect. You're mine, and I'm the luckiest person in the universe.
+
+Every moment with you feels like coming home. Like finding the answer to a question my soul has been asking my whole life.
 
 Ukisahau siku moja, rudi usome hii 💌
 You matter… sana kuliko unavyofikiria 🥹💞
+You matter more than the stars, more than time, more than breath itself.
 
 Niko hapa… always 🤍🌙
-Love you 💖`;
+Through every season, every storm, every dream and every dawn.
+
+Forever and always,
+With all my heart, all my soul, all that I am and all that I'll ever be.
+
+Love you with an infinity that never ends 💖`
 
   let letterRevealed = false;
   
@@ -681,13 +743,18 @@ Love you 💖`;
   }
 
   // ==================== FINAL SURPRISE ====================
+  // ==================== FINAL SURPRISE ====================
   const surpriseMessages = [
-    "💖 YOU are my greatest surprise. Every single day, you amaze me.",
-    "💗 I made this whole thing because you deserve to feel special. I hope it worked.",
-    "💕 Thank you for existing. Seriously. Thank you for being you.",
-    "💘 Now close your eyes for 5 seconds... I'm sending you a hug from wherever I am.",
-    "🌹 You are the best thing I never knew I was looking for.",
-    "✨ Every love song makes sense now. Because of you."
+    "💖 YOU are my greatest surprise. Every single day, you amaze me in ways I didn't know were possible.",
+    "💗 I made this whole thing because you deserve to feel as special as you make me feel. I hope it worked.",
+    "💕 Thank you for existing. Thank you for letting me love you. Thank you for being everything.",
+    "💘 I'm sending you a hug through the screen, holding your hand through the distance, loving you from here and forever.",
+    "🌹 You are the best thing I never knew I was looking for. My unexpected blessing.",
+    "✨ Every love song makes sense now. Every poet finally has their muse. Because of you.",
+    "🌟 Your love is my favorite place to be. Home is wherever you are.",
+    "👑 You wear strength like a crown, and I'm absolutely mesmerized by your light.",
+    "🔥 You set my heart on fire in the best way possible. You're my wildest dream come true.",
+    "🌊 You flow through my life like the most beautiful song I never want to stop hearing."
   ];
   
   let surpriseIndex = 0;

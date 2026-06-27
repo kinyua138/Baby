@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>For You, Val ❤️</title>
+  <title>For You, ✨ Karen 💖</title>
   <style>
     * {
       margin: 0;
@@ -177,6 +177,8 @@
       color: white;
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.2);
+      touch-action: manipulation;
+      min-height: 44px;
     }
 
     button:hover {
@@ -184,6 +186,12 @@
       background: #ff6b9d;
       border-color: #ff6b9d;
       box-shadow: 0 10px 25px rgba(255, 107, 157, 0.3);
+    }
+
+    button:focus-visible,
+    .nav-dot:focus-visible {
+      outline: 3px solid #ffd7e7;
+      outline-offset: 3px;
     }
 
     button.primary {
@@ -334,17 +342,21 @@
     }
 
     @media (max-width: 768px) {
-      .container { padding: 1rem; }
-      .glass-card { padding: 1.5rem; }
-      .carousel-3d { width: 250px; height: 330px; }
-      .carousel-item { width: 210px; height: 290px; left: 20px; top: 20px; }
+      .container { padding: 1rem 1rem 7rem; }
+      .glass-card { padding: 1.25rem; border-radius: 1.25rem; }
+      .carousel-3d { width: 220px; height: 300px; }
+      .carousel-item { width: 180px; height: 250px; left: 20px; top: 25px; }
+      .gallery-3d { min-height: 320px; }
+      .btn-group { flex-direction: column; align-items: stretch; }
+      .btn-group button { width: 100%; }
       .flip-front p, .flip-back p { font-size: 1rem; }
+      .love-letter { padding: 1.25rem; }
+      .love-letter p { font-size: 1rem; }
       .music-control {
         left: 50%;
         transform: translateX(-50%);
-        width: calc(100% - 40px);
-        max-width: 360px;
-        bottom: 20px;
+        width: min(calc(100% - 2rem), 360px);
+        bottom: 1rem;
         justify-content: center;
         padding: 12px 16px;
         font-size: 0.95rem;
@@ -357,9 +369,18 @@
       .surprise-badge {
         left: 50%;
         transform: translateX(-50%);
-        bottom: 76px;
+        bottom: 4.8rem;
         width: auto;
         padding: 8px 18px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
       }
     }
   </style>
@@ -370,7 +391,7 @@
 
 <div class="music-control" id="musicToggle">
   <span>🎵</span>
-  <span id="musicStatus">Play “Perfect” by Ed Sheeran</span>
+  <span id="musicStatus">Play "Perfect" by Ed Sheeran — Our Song</span>
 </div>
 
 <div class="surprise-badge" id="secretSurprise">
@@ -384,16 +405,18 @@
       <div class="nav-dot" data-screen="1"></div>
       <div class="nav-dot" data-screen="2"></div>
       <div class="nav-dot" data-screen="3"></div>
+      <div class="nav-dot" data-screen="4"></div>
     </div>
 
     <!-- Screen 0: Welcome -->
     <div class="screen active" id="screen0">
       <div style="text-align: center;">
-        <h1>✨ For You, Val ✨</h1>
-        <p class="subtitle">I made something special... just because you deserve it.</p>
+        <h1>✨ For You, ✨ Karen 💖 ✨</h1>
+        <p class="subtitle">I made something beautiful, something heartfelt, something that tries to capture just how deeply you mean to me.</p>
         <div style="margin: 3rem 0;">
           <div style="font-size: 5rem; animation: pulse 2s infinite;">💖</div>
         </div>
+        <p style="color: rgba(255, 255, 255, 0.6); font-size: 0.95rem; margin-bottom: 2rem;">This is my way of saying: You make my world infinitely better. You are my greatest adventure.🤍</p>
         <div class="btn-group">
           <button class="primary" onclick="goToScreen(1)">Open →</button>
         </div>
@@ -403,28 +426,28 @@
     <!-- Screen 1: 3D Gallery -->
     <div class="screen" id="screen1">
       <div style="text-align: center;">
-        <h1>📸 You</h1>
-        <p class="subtitle">Just you. Beautiful you.</p>
+        <h1>📸 You, 💖</h1>
+        <p class="subtitle">Beautiful inside and out. Every frame tells a story of why I'm so completely in love.</p>
       </div>
       <div class="gallery-3d">
         <div class="carousel-3d" id="carousel3d"></div>
       </div>
       <div class="btn-group">
-        <button onclick="goToScreen(0)">← Back</button>
-        <button class="primary" onclick="goToScreen(2)">Next →</button>
+        <button onclick="goToScreen(0)">← Back to Beginning</button>
+        <button class="primary" onclick="goToScreen(2)">Reveal →</button>
       </div>
     </div>
 
     <!-- Screen 2: Surprise Messages -->
     <div class="screen" id="screen2">
       <div style="text-align: center;">
-        <h1>💝 A Little Surprise</h1>
-        <p class="subtitle">Tap the card... I've been saving these words for you 💌</p>
+        <h1>🎁 A Love Letter Revealed</h1>
+        <p class="subtitle">Tap the card to reveal what my heart has been trying to tell you. Every message carries a piece of how much you mean to me. 💌</p>
       </div>
       <div class="flip-card-container" onclick="flipCard()">
         <div class="flip-card" id="flipCard">
           <div class="flip-front">
-            <p>✨ Tap me for a surprise ✨<br><span style="font-size: 2rem;">💕</span></p>
+            <p>✨ Tap to see what I've been holding in my heart ✨<br><span style="font-size: 2rem;">💕</span></p>
           </div>
           <div class="flip-back">
             <p id="surpriseMessage">💖</p>
@@ -432,25 +455,43 @@
         </div>
       </div>
       <div class="btn-group">
-        <button onclick="goToScreen(1)">← Back</button>
-        <button class="primary" onclick="randomMessage()">New Message 🎀</button>
-        <button onclick="goToScreen(3)">Next →</button>
+        <button onclick="goToScreen(1)">← Back to Gallery</button>
+        <button class="primary" onclick="randomMessage()">Surprise Me 🎀</button>
+        <button onclick="goToScreen(3)">Read More →</button>
       </div>
     </div>
 
     <!-- Screen 3: Love Letter -->
     <div class="screen" id="screen3">
       <div style="text-align: center;">
-        <h1>💌 Something From My Heart</h1>
-        <p class="subtitle">Read this when you need a reminder of how much you matter...</p>
+        <h1>💌 Pouring My Heart Out</h1>
+        <p class="subtitle">This is for the moments when you need to remember how extraordinary you are, how deeply cherished, how infinitely loved...</p>
       </div>
       <div class="love-letter" id="loveLetter">
         <p id="letterContent"></p>
       </div>
       <div class="btn-group">
-        <button onclick="goToScreen(2)">← Back</button>
-        <button class="primary" onclick="createHeartExplosion()">Send You Love 💕</button>
-        <button onclick="restart()">Start Over ↺</button>
+        <button onclick="goToScreen(2)">← Back to Messages</button>
+        <button class="primary" onclick="createHeartExplosion()">You Are My Everything 💞</button>
+        <button onclick="goToScreen(4)">Watch Our Video →</button>
+      </div>
+    </div>
+
+    <!-- Screen 4: Video -->
+    <div class="screen" id="screen4">
+      <div style="text-align: center;">
+        <h1>🎬 Your Video</h1>
+        <p class="subtitle">A beautiful memory, captured just for you. 💕</p>
+      </div>
+      <div style="margin: 2rem 0; display: flex; justify-content: center;">
+        <video style="width: 100%; max-width: 600px; border-radius: 1.5rem; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); background: #000;" controls playsinline preload="metadata" aria-label="Her video">
+          <source src="Love.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="btn-group">
+        <button onclick="goToScreen(3)">← Back to Letter</button>
+        <button class="primary" onclick="restart()">Start Over ↻</button>
       </div>
     </div>
   </div>
@@ -479,28 +520,44 @@
     "💗 You make my heart do things I can't explain... and I love every second of it. 💗",
     "🌟 You're my favorite reason to lose sleep. Worth every tired morning. 🌟",
     "💘 I didn't believe in perfect until I met you. Now I see it every day. 💘",
-    "🎀 Just so you know... you're the best thing that's ever happened to me. Period. 🎀"
+    "🎀 Just so you know... you're the best thing that's ever happened to me. Period. 🎀",
+    "🦋 The way you move through the world with such grace... it takes my breath away every single time. 🦋",
+    "🌷 You're the kind of person that makes staying awake at 3am feel like the best idea ever. 🌷",
+    "✨ In every moment with you, I find a thousand reasons why I'm hopelessly, completely, madly in love. ✨",
+    "🔥 Your presence alone makes my world feel infinite and impossibly beautiful. 🔥",
+    "💎 You're rare, you're precious, and you're mine... and I'm the luckiest person alive. 💎",
+    "🌊 You flow through my life like poetry I never knew I needed to read. 🌊",
+    "⭐ Every freckle, every smile, every moment... you're a constellation of everything I love. ⭐",
+    "🌹 They say true love is a myth... but then I look at you and believe in miracles again. 🌹",
+    "👑 You wear confidence like a crown, and I'm completely mesmerized. 👑",
+    "💝 My heart doesn't just belong to you... it sings your name in a thousand languages. 💝"
   ];
   
   // ==================== HEARTFELT LETTER (PERSONAL & TOUCHY) ====================
-  const loveLetter = `Hey Val, 💕
+  const loveLetter = `Hey ✨ Karen 💖, 💕
 
 I'm not the best with words... but with you, I want to try.
 
-There's something about you that I can't quite explain. Maybe it's the way you smile, or the way you make everything feel lighter just by being there. Maybe it's the way you look at me sometimes... like you actually see me.
+There's something about you that I can't quite explain. Maybe it's the way you smile, or the way you make everything feel lighter just by being there. Maybe it's the way you look at me sometimes... like you actually see me. Maybe it's simply that you exist, and that alone is enough to change everything.
 
-I've been thinking about you a lot lately. Not in a weird way (okay, maybe a little 😅) — but in a "I can't believe someone like you exists" way. You're not like anyone I've ever met. You're real. You're warm. You're you... and that's more than enough.
+I've been thinking about you a lot lately. Not in a weird way (okay, maybe a little 😅) — but in a "I can't believe someone like you exists" way. You're not like anyone I've ever met. You're real. You're warm. You're genuine in a world full of pretense, and that's what draws me to you most.
 
-I made this little thing for you because I wanted you to know that someone out there thinks you're incredible. Someone notices the little things about you. Someone stays up late wondering if you're happy.
+I notice the little things about you that take my breath away—the way your eyes light up when you laugh, the gentleness in your voice, how you make everyone around you feel seen and valued. You're the kind of person who makes the world softer just by being in it.
 
-I hope this makes you smile. I hope you feel loved. Because you are. More than you'll ever know.
+I made this little thing for you because I wanted you to know that someone out there thinks you're absolutely incredible. Someone notices every beautiful detail about you. Someone stays up late wondering if you're happy, if you're taking care of yourself, if you know just how much you matter.
 
-Thank you for existing, Val. Seriously.
+You've changed my life in ways I never expected. You've made me believe in love again. You've shown me what it means to want someone not because you need them, but because being with them makes everything make sense.
 
-Yours,
+I hope this makes you smile. I hope you feel the depth of what I'm trying to express. Because you are loved. More than you'll ever know. More than words could ever capture.
+
+Thank you for being you. Thank you for letting me love you. Thank you for existing, ✨ Karen 💖.
+
+Forever yours,
 Tosh 💌
 
-P.S. — You're beautiful. Like, really beautiful. Just in case you forgot today. 💖`;
+P.S. — You're beautiful. Like, really beautiful. Not just on the outside—that's just the beginning. Your heart, your soul, your spirit... that's where the real magic lives. Just in case you forgot today. 💖
+
+P.P.S. — I'm never letting you go. 🌹`
   
   // ==================== ED SHEERAN - PERFECT ====================
   const musicTitle = 'Perfect — Ed Sheeran';
@@ -565,9 +622,9 @@ P.S. — You're beautiful. Like, really beautiful. Just in case you forgot today
       
       const img = document.createElement('img');
       img.src = src;
-      img.alt = `Val`;
+      img.alt = `✨ Karen 💖`;
       img.onerror = () => {
-        img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"%3E%3Crect width="200" height="200" fill="%23ff6b9d"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="white" font-size="14"%3E💖 Val%3C/text%3E%3C/svg%3E';
+        img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"%3E%3Crect width="200" height="200" fill="%23ff6b9d"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="white" font-size="14"%3E💖 ✨ Karen 💖%3C/text%3E%3C/svg%3E';
       };
       item.appendChild(img);
       container.appendChild(item);
@@ -576,13 +633,43 @@ P.S. — You're beautiful. Like, really beautiful. Just in case you forgot today
     let mouseX = 0;
     let rotation = 0;
     
-    container.addEventListener('mousemove', (e) => {
+    const setRotationFromClientX = (clientX) => {
       const rect = container.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
-      mouseX = (e.clientX - centerX) / rect.width;
+      mouseX = (clientX - centerX) / rect.width;
       rotation = mouseX * 180;
       container.style.transform = `rotateY(${rotation}deg)`;
+    };
+
+    // Mouse support
+    container.addEventListener('mousemove', (e) => {
+      setRotationFromClientX(e.clientX);
     });
+
+    // Touch support (drag to rotate)
+    let isTouchDragging = false;
+    container.addEventListener('touchstart', (e) => {
+      if (!e.touches || e.touches.length === 0) return;
+      isTouchDragging = true;
+      container.style.animation = 'none';
+      const t = e.touches[0];
+      setRotationFromClientX(t.clientX);
+    }, { passive: true });
+
+    container.addEventListener('touchmove', (e) => {
+      if (!isTouchDragging) return;
+      if (!e.touches || e.touches.length === 0) return;
+      const t = e.touches[0];
+      setRotationFromClientX(t.clientX);
+    }, { passive: true });
+
+    const endTouch = () => {
+      isTouchDragging = false;
+      container.style.animation = 'rotateCarousel 25s infinite linear';
+    };
+    container.addEventListener('touchend', endTouch);
+    container.addEventListener('touchcancel', endTouch);
+
     
     container.addEventListener('mouseleave', () => {
       container.style.animation = 'rotateCarousel 25s infinite linear';
@@ -658,7 +745,7 @@ P.S. — You're beautiful. Like, really beautiful. Just in case you forgot today
   
   // ==================== SCREEN NAVIGATION ====================
   function goToScreen(index) {
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 5; i++) {
       const screen = document.getElementById(`screen${i}`);
       if (screen) screen.classList.remove('active');
     }
@@ -714,7 +801,7 @@ P.S. — You're beautiful. Like, really beautiful. Just in case you forgot today
   function secretSurprise() {
     createHeartExplosion();
     setTimeout(() => {
-      alert('💖 YOU are the real surprise! 💖\n\nI made this whole thing just for you because you deserve to feel special. Hope it made you smile! 😊');
+      alert('💖 YOU are the real surprise! 💖\n\nI made this entire world just for you because you deserve to feel absolutely cherished, deeply valued, and endlessly loved.\n\nEvery detail, every word, every emoji—it\'s all because you matter to me in ways I can\'t even express.\n\nThank you for being you. Thank you for existing. Thank you for letting me love you. 🌹\n\nForever yours with all my heart 💕');
     }, 500);
   }
   
